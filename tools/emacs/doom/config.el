@@ -5,12 +5,6 @@
 (setq user-full-name "Theia Ware"
       user-mail-address "mail@theia-jane.dev")
 
-(setq doom-leader-key "H-SPC"
-      doom-leader-alt-key "H-SPC"
-      doom-localleader-key "H-m"
-      doom-localleader-alt-key "H-m")
-
-
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -76,14 +70,14 @@
 
 (setq remap-leader-keys-list
   '(
-     "H-SPC b" "H-b"
-     "H-SPC f" "H-f"
-     "H-SPC n" "H-n"
-     "H-SPC g" "H-g"
-     "H-SPC p" "H-p"
-     "H-SPC s" "H-/"
-     "H-SPC o" "H-o"
-     "H-SPC TAB" "H-<tab>" ; Emacs has different maps / keys for TAB and <tab> The map is stored on TAB, but the key press shows up as <tab>
+     "SPC b" "H-b"
+     "SPC f" "H-f"
+     "SPC n" "H-n"
+     "SPC g" "H-g"
+     "SPC p" "H-p"
+     "SPC s" "H-/"
+     "SPC o" "H-o"
+     "SPC TAB" "H-<tab>" ; Emacs has different maps / keys for TAB and <tab> The map is stored on TAB, but the key press shows up as <tab>
      )
   )
 (defun ~remap-leader-prefix-keys (&rest _)
