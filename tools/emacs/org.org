@@ -24,7 +24,8 @@
     "List the org files in the current directory"
     (directory-files default-directory nil "\\.org$"))
 
-  (require! org-edit
+  (require! org-index
+            org-edit
             org-navigate
             org-server-manager
             ob-extended-tangle
