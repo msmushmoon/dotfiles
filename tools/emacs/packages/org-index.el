@@ -14,8 +14,13 @@
 ;; This file is not part of GNU Emacs.
 ;;
 ;;; Commentary:
+;;  Create org index list of links and update it
 ;;
-;;  Create org index list
+;; Things to come:
+;; - TODO(msmushmoon): Extract link naming to central function
+;; - TODO(msmushmoon): Add contents of #+DESCRIPTION: to link
+;; - TODO(msmushmoon): Add ability to add/update index to arbiratry file
+;; - TODO(msmushmoon): Add ability recursively add / update indices
 ;;
 ;;; Code:
 
