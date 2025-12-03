@@ -34,6 +34,12 @@ Not sure why I have this default, but it was in my original (pre-literate) confi
     default = simple
 #+END_SRC
 
+Change default branch name to main
+#+BEGIN_SRC conf
+[init]
+    defaultBranch = main
+#+END_SRC
+
 * Scripts
 :PROPERTIES:
 :header-args:bash: :comments yes :dir $HOME/bin :shebang #!/usr/bin/env bash
