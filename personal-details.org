@@ -3,7 +3,7 @@
 #+NAME: contact-info
 | Full Name       | Theia Ware             |
 | Email           | theia.j.ware@gmail.com |
-| Github Username | theia-jane             |
+| Github Username | msmushmoon             |
 
 /Note:/ This is a hack to get the table visible outside of this file. =org-babel-resolve-ref= pulls from library of babel, but library of babel does not ingest tables. One way to ingest this into the lob would be to add advice around =org-babel-lob-ingest= that maps all =#+name= properties and creates org source blocks that are resolvable (as I'm doing below)
 
