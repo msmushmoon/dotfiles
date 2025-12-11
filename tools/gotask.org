@@ -1,0 +1,11 @@
+#+title: Task
+[[https://taskfile.dev/docs/guide][Docs]]
+
+#+begin_src yaml :dir ${HOME} :tangle taskfile.yml
+version: '3'
+
+tasks:
+  sync-books:
+    cmds:
+      - rsync -avz ${HOME}/Calibre\ Library/ server.home:/media/internal/library
+#+end_src

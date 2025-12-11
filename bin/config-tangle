@@ -84,14 +84,12 @@
 (defvar org-babel-comment-definitions
   `((,(rx ".y" (? "a") "ml" eol) "# " "#+ *" "")))
 
-
 (defun org-babel-get-comment-values (filename)
   (let (values)
     (dolist (spec org-babel-comment-definitions)
       (unless values
         (if (string-match-p (car spec) filename)
-            (setq values (cdr spec))
-          )))
+            (setq values (cdr spec)))))
     (or values
         (list comment-start comment-start-skip comment-end))))
 
@@ -106,11 +104,6 @@
     (cl-letf (((symbol-function 'comment-region) substitute-comment))
       (apply fn (list spec)))))
 
-;;
-;;
-;; (cl-letf (((symbol-function 'message) #'format)
-;;             ((symbol-function 'print) #'identity))
-;;     (apply fn args))
 (advice-add 'org-babel-spec-to-string :around #'provide-comment-vars)
 ;; Tangle:5 ends here
 
