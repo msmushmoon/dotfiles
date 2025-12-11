@@ -142,6 +142,34 @@ some JIT information. (Such as a credential or system dependent thing)
       (emacs-lisp . t)))
 #+END_SRC
 
+Since we are before loading much in the way of lanugages / requiring packages we need to add
+#+BEGIN_SRC elisp
+(defvar org-babel-comment-definitions
+  `((,(rx ".y" (? "a") "ml" eol) "# " "#+ *" "")))
+
+(defun org-babel-get-comment-values (filename)
+  (let (values)
+    (dolist (spec org-babel-comment-definitions)
+      (unless values
+        (if (string-match-p (car spec) filename)
+            (setq values (cdr spec)))))
+    (or values
+        (list comment-start comment-start-skip comment-end))))
+
+(defun provide-comment-vars (fn spec)
+  (let* ((info (nth 4 spec))
+         (tangle-file (cdr (assq :tangle info)))
+         (comment-fn (symbol-function 'comment-region))
+         (substitute-comment #'(lambda (&rest args)
+                                 (pcase-let
+                                     ((`(,comment-start ,comment-start-skip ,comment-end) (org-babel-get-comment-values tangle-file)))
+                                   (apply comment-fn args)))))
+    (cl-letf (((symbol-function 'comment-region) substitute-comment))
+      (apply fn (list spec)))))
+
+(advice-add 'org-babel-spec-to-string :around #'provide-comment-vars)
+#+END_SRC
+
 
 I want my tangled scripts to automatically be executable, so I'll make sure it's executable when I save it.
 #+begin_src elisp

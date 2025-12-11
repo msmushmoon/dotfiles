@@ -11,7 +11,8 @@
   
   (defvar android-termux-shell (concat android-termux-bin "/bash"))
   (setenv "SHELL" android-termux-shell)
-  (setq shell-file-name android-termux-shell))
+  (setq shell-file-name android-termux-shell
+        tramp-encoding-shell android-termux-shell))
 (require 'subr-x)
 (require 'rx)
 
@@ -80,11 +81,45 @@
 ;; Tangle:4 ends here
 
 ;; [[file:../config-cli.org::*Tangle][Tangle:5]]
-(add-hook 'after-save-hook
-  'executable-make-buffer-file-executable-if-script-p)
+(defvar org-babel-comment-definitions
+  `((,(rx ".y" (? "a") "ml" eol) "# " "#+ *" "")))
+
+
+(defun org-babel-get-comment-values (filename)
+  (let (values)
+    (dolist (spec org-babel-comment-definitions)
+      (unless values
+        (if (string-match-p (car spec) filename)
+            (setq values (cdr spec))
+          )))
+    (or values
+        (list comment-start comment-start-skip comment-end))))
+
+(defun provide-comment-vars (fn spec)
+  (let* ((info (nth 4 spec))
+         (tangle-file (cdr (assq :tangle info)))
+         (comment-fn (symbol-function 'comment-region))
+         (substitute-comment #'(lambda (&rest args)
+                                 (pcase-let
+                                     ((`(,comment-start ,comment-start-skip ,comment-end) (org-babel-get-comment-values tangle-file)))
+                                   (apply comment-fn args)))))
+    (cl-letf (((symbol-function 'comment-region) substitute-comment))
+      (apply fn (list spec)))))
+
+;;
+;;
+;; (cl-letf (((symbol-function 'message) #'format)
+;;             ((symbol-function 'print) #'identity))
+;;     (apply fn args))
+(advice-add 'org-babel-spec-to-string :around #'provide-comment-vars)
 ;; Tangle:5 ends here
 
 ;; [[file:../config-cli.org::*Tangle][Tangle:6]]
+(add-hook 'after-save-hook
+  'executable-make-buffer-file-executable-if-script-p)
+;; Tangle:6 ends here
+
+;; [[file:../config-cli.org::*Tangle][Tangle:7]]
 (defun config-file-filter (file)
   (and
    (not 
@@ -123,4 +158,4 @@
 (config-tangle)
 
 (kill-emacs 0)
-;; Tangle:6 ends here
+;; Tangle:7 ends here
