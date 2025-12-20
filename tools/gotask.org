@@ -5,7 +5,18 @@
 version: '3'
 
 tasks:
-  sync-books:
+  sync-up-books:
     cmds:
+      - bash -c "pkill calibre || true"
+      - ssh server.home systemctl --user stop calibre
       - rsync -avz ${HOME}/Calibre\ Library/ server.home:/media/internal/library
+      - ssh server.home systemctl --user start calibre
+      - d calibre
+  sync-down-books:
+    cmds:
+      - bash -c "pkill calibre || true"
+      - ssh server.home systemctl --user stop calibre
+      - rsync -avz server.home:/media/internal/library/ ${HOME}/Calibre\ Library
+      - ssh server.home systemctl --user start calibre
+      - d calibre
 #+end_src
